@@ -1,16 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit'
-import loginService from '../services/login'
+import { createSlice } from "@reduxjs/toolkit"
+import loginService from "../services/login"
 
 const userSlice = createSlice({
-    name: 'user',
+    name: "user",
     initialState: null,
     reducers: {
         setUser(state, action) {
             return action.payload
         },
 
-        removeUser(state, action) {
-            return ''
+        removeUser() {
+            return null
         },
     },
 })
@@ -22,6 +22,14 @@ export const userLogin = (credentials) => {
         const user = await loginService.login(credentials)
 
         dispatch(setUser(user))
+        window.localStorage.setItem("loginData", JSON.stringify(user))
+    }
+}
+
+export const userLogout = () => {
+    return (dispatch) => {
+        dispatch(removeUser())
+        window.localStorage.removeItem("loginData")
     }
 }
 
